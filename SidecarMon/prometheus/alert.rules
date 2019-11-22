@@ -1,0 +1,49 @@
+groups:
+- name: targets
+  rules:
+  - alert: monitor_service_down
+    expr: up == 0
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Monitor service non-operational"
+      description: "Service {{ $labels.instance }} is down."
+
+- name: containers
+  rules:
+  - alert: playlistApi_down
+    expr: absent(container_memory_usage_bytes{name="playlistApi"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "playlistApi down"
+      description: "playlistApi container is down for more than 30 seconds."
+
+  - alert: playlistApi_high_cpu
+    expr: sum(rate(container_cpu_usage_seconds_total{name="playlistApi"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "playlistApi high CPU usage"
+      description: "playlistApi CPU usage is {{ humanize $value}}%."
+
+  - alert: playlistApi_high_memory
+    expr: sum(container_memory_usage_bytes{name="playlistApi"}) > 1200000000
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "playlistApi high memory usage"
+      description: "playlistApi memory consumption is at {{ humanize $value}}."
+
+  - alert: playlistApi_high_network_utilization
+    expr: sum(container_network_receive_bytes_total{name="playlistApi"}) > 1200000000
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "playlistApi high network utilization"
+      description: "playlistApi extremely high network utilization for more than 30 seconds."
