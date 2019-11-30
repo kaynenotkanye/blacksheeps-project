@@ -9,5 +9,6 @@ services:
     build:
       context: .
       dockerfile: PlaylistAPI/Dockerfile
+    restart: always
     environment:         - ConnectionString=Server=playlistData;Database=Playlist;User Id=sa;Password=SuperSecret1!     depends_on:        - playlistData    playlistData:     image: mcr.microsoft.com/mssql/server:2017-latest
     container_name: playlistData     environment:         - SA_PASSWORD=SuperSecret1!         - ACCEPT_EULA=Y     ports:         - "1433:1433"
