@@ -1200,7 +1200,7 @@
       {
         "evaluator": {
           "params": [
-            900000
+            9998
           ],
           "type": "gt"
         },
@@ -1222,7 +1222,7 @@
       }
     ],
     "executionErrorState": "alerting",
-    "for": "1m",
+    "for": "5s",
     "frequency": "1s",
     "handler": 1,
     "message": "High network utilization observed.",
